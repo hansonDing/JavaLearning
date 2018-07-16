@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hansonding.mapper.UserMapper">
+    <resultMap id="UserResultMap" type="com.hansonding.pojo.User">
+        <result column="ID" property="id" jdbcType="INTEGER"/>
+        <result column="USER_NAME" property="userName" jdbcType="VARCHAR"/>
+        <result column="USER_PWD" property="passWord" jdbcType="VARCHAR"/>
+        <result column="USER_FLAG" property="userFlag" jdbcType="VARCHAR"/>
+        <result column="PWD_UPDATE" property="pwdUpdate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <select id="getUserById" resultMap="UserResultMap" parameterType="java.lang.Integer">
+        select id,user_name, user_pwd, user_flag, pwd_update
+          from t_user
+         where id = #{id,jdbcType=INTEGER}
+    </select>
+    <insert id="insert" parameterType="com.hansonding.pojo.User">
+        insert into t_user (id, user_name, user_pwd, user_flag, pwd_update)
+        values
+        (#{id}, #{userName}, #{passWord}, #{userFlag}, #{pwdUpdate})
+    </insert>
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete from t_user where id = #{id}
+    </delete>
+    <update id="updateById" parameterType="com.hansonding.pojo.User">
+        update t_user
+        <set>
+            <if test="userName!=null">
+                USER_NAME = #{userName},
+            </if>
+            <if test="passWord!=null">
+                USER_PWD = #{passWord},
+            </if>
+            <if test="userFlag!=null">
+                USER_FLAG = #{userFlag},
+            </if>
+            <if test="pwdUpdate!=null">
+                PWD_UPDATE = #{pwdUpdate},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <select id="getAllUser" resultType="com.hansonding.pojo.User">
+        SELECT id, user_name, user_pwd, user_flag, pwd_update
+          FROM t_user
+    </select>
+</mapper>
